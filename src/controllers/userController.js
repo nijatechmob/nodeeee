@@ -80,6 +80,70 @@ const createuser = async (req, res) => {
   }
 };
 
+// LOGIN USER
+const loginuser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // validation
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and Password are required",
+      });
+    }
+
+    // find user
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // compare password
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+
+    // create token
+    const token = jwt.sign(
+      {
+        userId: user.userId,
+        role: user.role,
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: "7d",
+      }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      token,
+      data: {
+        userId: user.userId,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // GET ALL USERS
 const getusers = async (req, res) => {
   try {
@@ -102,5 +166,6 @@ const getusers = async (req, res) => {
 
 module.exports = {
   createuser,
+  loginuser,
   getusers,
 };
