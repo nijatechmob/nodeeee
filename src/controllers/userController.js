@@ -9,7 +9,8 @@ const createuser = async (req, res) => {
       name,
       email,
       mobileNumber,
-      role,
+      roleId,
+      roleName,
       password,
     } = req.body;
 
@@ -51,7 +52,8 @@ const createuser = async (req, res) => {
       name,
       email,
       mobileNumber,
-      role: role || "user",
+      roleId: roleId,
+      roleName: roleName,
       password: hashedPassword,
     });
 
@@ -117,7 +119,8 @@ const loginuser = async (req, res) => {
     const token = jwt.sign(
       {
         userId: user.userId,
-        role: user.role,
+        roleId: user.roleId,
+        roleName: user.roleName,
       },
       process.env.JWT_SECRET,
       {
@@ -133,7 +136,9 @@ const loginuser = async (req, res) => {
         userId: user.userId,
         name: user.name,
         email: user.email,
-        role: user.role,
+        mobileNumber : user.mobileNumber,
+           roleId: user.roleId,
+        roleName: user.roleName,
       },
     });
   } catch (error) {
