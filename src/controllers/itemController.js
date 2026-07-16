@@ -4,7 +4,7 @@ const addItem = async (req, res) => {
   try {
     const item = await Item.create(req.body);
 
-    res.status(201).json({
+    res.status(200).json({
       success: true,
       message: "Item Added Successfully",
       data: item,

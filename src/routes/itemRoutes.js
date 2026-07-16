@@ -12,9 +12,9 @@ const {
   deleteItem,
 } = require("../controllers/itemController");
 
-router.post("/add", auth, adminOnly, addItem);
-router.get("/get", auth, getItems);
-router.put("/update/:itemId", auth, adminOnly, updateItem);
-router.delete("/delete/:itemId", auth, adminOnly, deleteItem);
+router.post("/additem", auth, adminOnly, addItem);
+router.get("/getitem", auth, getItems);
+router.put("/updateitem/:itemId", auth, adminOnly, updateItem);
+router.delete("/deleteitem/:itemId", auth, adminOnly, deleteItem);
 
 module.exports = router;
