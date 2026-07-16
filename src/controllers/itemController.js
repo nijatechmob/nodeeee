@@ -35,10 +35,10 @@ const getItems = async (req, res) => {
 
 const updateItem = async (req, res) => {
   try {
-    const { itemId } = req.params;
+    const { itemId } = req.body;
 
     const item = await Item.findOneAndUpdate(
-      { itemId: itemId },
+      { itemId },
       req.body,
       { new: true }
     );
@@ -50,7 +50,7 @@ const updateItem = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Item Updated Successfully",
       data: item,
@@ -65,7 +65,7 @@ const updateItem = async (req, res) => {
 
 const deleteItem = async (req, res) => {
   try {
-    const { itemId } = req.params;
+    const { itemId } = req.body;
 
     const item = await Item.findOneAndDelete({ itemId });
 
@@ -76,7 +76,7 @@ const deleteItem = async (req, res) => {
       });
     }
 
-    res.status(200).json({
+    res.json({
       success: true,
       message: "Item Deleted Successfully",
     });
