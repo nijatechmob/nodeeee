@@ -1,107 +1,96 @@
 const Item = require("../models/Item");
 
-const addItem = async(req,res)=>{
+const addItem = async (req, res) => {
+  try {
+    const item = await Item.create(req.body);
 
-    try{
-
-        const item = await Item.create(req.body);
-
-        res.status(200).json({
-            success:true,
-            message:"Item Added",
-            data:item
-        });
-
-    }catch(err){
-
-        res.status(500).json({
-            success:false,
-            message:err.message
-        });
-
-    }
-
-}
-
-const getItems = async(req,res)=>{
-
-    const items = await Item.find().sort({itemId:1});
-
-    res.json({
-        success:true,
-        data:items
+    res.status(201).json({
+      success: true,
+      message: "Item Added Successfully",
+      data: item,
     });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
-}
-const updateItem = async(req,res)=>{
+const getItems = async (req, res) => {
+  try {
+    const items = await Item.find().sort({ itemId: 1 });
 
-    try{
+    res.status(200).json({
+      success: true,
+      data: items,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
-        const {itemId}=req.params;
+const updateItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
 
-        const item = await Item.findOneAndUpdate(
-            {itemId},
-            req.body,
-            {new:true}
-        );
+    const item = await Item.findOneAndUpdate(
+      { itemId: itemId },
+      req.body,
+      { new: true }
+    );
 
-        if(!item){
-
-            return res.status(404).json({
-                success:false,
-                message:"Item not found"
-            });
-
-        }
-
-        res.json({
-            success:true,
-            message:"Item Updated",
-            data:item
-        });
-
-    }catch(err){
-
-        res.status(500).json({
-            success:false,
-            message:err.message
-        });
-
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
     }
 
-}
+    res.status(200).json({
+      success: true,
+      message: "Item Updated Successfully",
+      data: item,
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
 
-const deleteItem = async(req,res)=>{
+const deleteItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
 
-    try{
+    const item = await Item.findOneAndDelete({ itemId });
 
-        const {itemId}=req.params;
-
-        const item = await Item.findOneAndDelete({
-            itemId
-        });
-
-        if(!item){
-
-            return res.status(404).json({
-                success:false,
-                message:"Item not found"
-            });
-
-        }
-
-        res.json({
-            success:true,
-            message:"Item Deleted"
-        });
-
-    }catch(err){
-
-        res.status(500).json({
-            success:false,
-            message:err.message
-        });
-
+    if (!item) {
+      return res.status(404).json({
+        success: false,
+        message: "Item not found",
+      });
     }
 
-}
+    res.status(200).json({
+      success: true,
+      message: "Item Deleted Successfully",
+    });
+  } catch (err) {
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+};
+
+module.exports = {
+  addItem,
+  getItems,
+  updateItem,
+  deleteItem,
+};
