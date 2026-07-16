@@ -14,7 +14,7 @@ const {
 
 router.post("/additem", auth, adminOnly, addItem);
 router.get("/getitem", auth, getItems);
-router.put("/updateitem", auth, adminOnly, updateItem);
+router.post("/updateitem", auth, adminOnly, updateItem);
 router.delete("/deleteitem", auth, adminOnly, deleteItem);
 
 module.exports = router;
