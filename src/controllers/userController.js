@@ -128,19 +128,21 @@ const loginuser = async (req, res) => {
       }
     );
 
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
-      token,
-      data: {
-        userId: user.userId,
-        name: user.name,
-        email: user.email,
-        mobileNumber : user.mobileNumber,
-           roleId: user.roleId,
-        roleName: user.roleName,
-      },
-    });
+return res.status(200).json({
+  success: true,
+  message: "Login successful",
+  token,
+  data: [
+    {
+      userId: user.userId,
+      name: user.name,
+      email: user.email,
+      mobileNumber: user.mobileNumber,
+      roleId: user.roleId,
+      roleName: user.roleName,
+    },
+  ],
+});
   } catch (error) {
     return res.status(500).json({
       success: false,
